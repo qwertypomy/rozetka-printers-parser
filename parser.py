@@ -109,7 +109,9 @@ def parse_rozetka_printers(printer_n):
             text = soup.find(text="Размеры (Д х Ш х В), мм")
             size = ""
             if text is not None:
-                size = text.parent.parent.parent.span.text
+                size_text = text.parent.parent.parent.span.text
+                print(size_text)
+                size = re.findall(r'[0-9,\.-]+ . [0-9,\.-]+ . [0-9,\.-]+', size_text)[0]
 
             # Additional info
             additional_info = ""
