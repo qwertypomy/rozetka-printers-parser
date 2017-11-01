@@ -12,7 +12,7 @@ import unicodecsv as csv
 logging.getLogger().setLevel(logging.INFO)
 
 
-def parse_rozetka_printers(printer_n):
+def parse_rozetka_printers(printer_n=0):
     url = 'https://rozetka.com.ua/printers-mfu/c80007/filter/'
     r = requests.get(url)
     soup = BeautifulSoup(r.text, "html5lib")
@@ -110,7 +110,6 @@ def parse_rozetka_printers(printer_n):
             size = ""
             if text is not None:
                 size_text = text.parent.parent.parent.span.text
-                print(size_text)
                 size = re.findall(r'[0-9,\.-]+ . [0-9,\.-]+ . [0-9,\.-]+', size_text)[0]
 
             # Additional info
@@ -161,16 +160,16 @@ def parse_rozetka_printers(printer_n):
 
             prnt_len = len(printers)
             logging.info("\n" + str(prnt_len) + ': ' + printers[prnt_len-1]["Name"])
-            if prnt_len == printer_n:
+            if printer_n and prnt_len == printer_n:
                 break
-        if len(printers) == printer_n:
+        if printer_n and len(printers) == printer_n:
             break
 
     keys = printers[0].keys()
-    with open('printers.csv', 'wb') as output_file:
+    with open('printers%d.csv' % len(printers), 'wb') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(printers)
 
 
-parse_rozetka_printers(100)
+parse_rozetka_printers()
