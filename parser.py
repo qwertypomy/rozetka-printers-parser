@@ -126,8 +126,9 @@ def parse_rozetka_printers(printer_n=0):
             # Price
             text = soup.select_one('meta[itemprop="price"]')
             price = ""
-            if text is not None:
-                price = text["content"]
+            if text is None:
+                continue
+            price = text["content"]
 
             # Name
             name = soup.select_one('h1[class=detail-title]').string.split("+", 1)[0]
