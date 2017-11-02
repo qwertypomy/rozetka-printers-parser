@@ -133,7 +133,8 @@ def parse_rozetka_printers(printer_n=0):
             name = soup.select_one('h1[class=detail-title]').string.split("+", 1)[0]
 
             # Brand
-            brand = name.split()[0]
+            brand = " ".join(soup.select('span[class=breadcrumbs-title]')[-1].string.split()[1:])
+
 
             # Description
             description = ""
